@@ -40,6 +40,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 mapView.mapType = MKMapType.Standard
                 mapView.showsUserLocation = true
                 mapView.showsBuildings = true
+                
+                MKCoordinateRegion region;
+                // <LATITUDE> and <LONGITUDE> for Cupertino, CA.
+                
+                region = MKCoordinateRegionMake(location, MKCoordinateSpanMake(0.5, 0.5));
+                // 0.5 is spanning value for region, make change if you feel to adjust bit more
+                
+                MKCoordinateRegion adjustedRegion = [self.mapView regionThatFits:region];
+                [self.mapView setRegion:adjustedRegion animated:YES];
             }
         }
         else{
@@ -57,12 +66,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         locationManager.stopUpdatingLocation()
         initiatLocationManager()
     }
-    //this gets called in every single move
+    
+    //this gets called in every single second or so
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         var locationArray = locations as NSArray
         var locationObj = locationArray.lastObject as CLLocation
         var xy = locationObj.coordinate
         var speed = locationObj.speed
+        
         println("Latitude \(xy.latitude)")
         println("Longitude: \(xy.longitude)")
         println("Speed: \(speed)")

@@ -35,7 +35,7 @@
                                 </connections>
                             </button>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rbN-yw-ffr">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="8" width="600" height="44"/>
                                 <items>
                                     <navigationItem title="Bump" id="tWF-kT-Nf1"/>
                                 </items>
@@ -44,8 +44,10 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="rbN-yw-ffr" secondAttribute="trailing" id="UpZ-u1-miF"/>
+                            <constraint firstAttribute="centerX" secondItem="rbN-yw-ffr" secondAttribute="centerX" id="Wdi-7X-vNk"/>
                             <constraint firstItem="rbN-yw-ffr" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="pdK-0B-PGd"/>
-                            <constraint firstItem="rbN-yw-ffr" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" id="rHv-ma-jVm"/>
+                            <constraint firstItem="rbN-yw-ffr" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" constant="8" id="rHv-ma-jVm"/>
+                            <constraint firstAttribute="width" secondItem="rbN-yw-ffr" secondAttribute="width" id="v5i-Zn-sFd"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
@@ -67,7 +69,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="147" y="368"/>
+            <point key="canvasLocation" x="150" y="387"/>
         </scene>
     </scenes>
 </document>

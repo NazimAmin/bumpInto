@@ -60,7 +60,7 @@ CollectionDriver.prototype.save = function(collectionName, obj, callback) {
 // if any of the jsons are too close, less than a certain threshold,
 // place certain things in certain palces
 
-CollectionDriver.prototype.calculateDistance = function(obj1, obj2){ 
+calculateDistance = function(obj1, obj2){ 
   // x1y1 has to be the larger number
   // var x1, x2, y1, y2 
   var x1 = obj1.location.x;
@@ -77,31 +77,59 @@ CollectionDriver.prototype.calculateDistance = function(obj1, obj2){
   return result;
 }
 
-CollectonDriver.prototype.fullCalculate = function(collectionName, obj, callback){
-  // ths fucntion will clculate across all of the JSON's tht we have, treat them all as objects
-  /// returns the distance, whos colliding as well as true or false k
-  // everything is always done withn the callback
-  var length;
-  var i;
-  var collection = getCollection(collectionName, function(error, collection){
-    if(error){ callBack(error, false);
-    } else () {
-      i = collection.getLength();
-      for (i; i!=0 ;i--){
-    // iterate through, getting every object from the collection,
-    // and passing it in to the distance function
-      var comparator = collection.toArray[i]; 
-        if(comparator.name =! obj.name){
-          length = calculateDistance(comparator, obj);
-          if(length < 1000){ // some arbitrary number 
-            //return comparator; idk how to return ll these details
-            // so imma assume that the code that clled me saves the json that is obj1
-            //  
-            callback(comparator, true); // true case
-          }
-      }
-  } //return null; //case if it's false, nothing else matters
-  callback(null, false); // false
+
+//Calculate the person closest to personName using distance formula
+CollectionDriver.prototype.getDistance = function(collectionName, personName, callback){
+  var lowestDistance = 1000000000 //Assume farthest distance, 
+  var lastPerson;
+  this.getCollection(collectionName, function(error, collection){
+    if(error){callBack(error, false);
+    } else {
+      //Grab object by playerName
+      collection.findOne({"name" : personName}, function(error, playerObject){
+        if (error){
+          callback(error, false);
+        }
+        //Grab db size
+        collection.count({}, function(error, count) {
+
+          collection.find().sort({'Score' : -1}).toArray(function(error, results) { //B
+            if( error ) callback(error)
+            else {
+              for (var i = 0; i<count ;i++){
+              // iterate through, getting every object from the collection,
+              // and passing it in to the distance function
+                var comparator = results[i]
+                  if(playerObject.name != comparator.name){
+                    //calculate distance between the the param person and the current item in the list.
+                    var distance = calculateDistance(comparator, playerObject);
+                    if(distance < lowestDistance){ // difference in distance
+                        lowestDistance = distance;
+                        lastPerson = comparator
+                        //Return document in collection we ar trying to get.
+                      }
+                    }
+                } 
+
+        //create new json object
+            var closestPerson = {
+                "name" : lastPerson.name,
+                "distance" : lowestDistance
+            }
+
+            //return new made object; //case if it's false, nothing else matters
+             callback(closestPerson, true); // true case
+
+            }
+          })
+
+
+            
+
+            
+      // ..
+        });
+      })
 } 
 })
 

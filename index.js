@@ -35,11 +35,10 @@ app.get('/', function (req, res) {
   res.render('main')
 });
  
-// ths is our get function, this s importnat
 // 
 app.get('/data', function(req, res) { //A
    var params = req.params; //B this gets al params
-   dbCollection = 'players' // this makes a collection
+   dbCollection = 'people' // this makes a collection
    //console.log(req)
    collectionDriver.findAll(dbCollection, function(error, objs) { //C
         if (error) { res.send(400, error); } //D
@@ -61,10 +60,14 @@ app.get('/data', function(req, res) { //A
 app.post('/data', function(req, res) { //A
     var object = req.body; // this is the JSON
     console.log(object)// this is theest that shows tht the post went through
-    var dbCollection = 'players';
-    JSONtemp = object;
-    // insted of object.score, we'll implement object.x or object.y, probbly both
-    object.Score = parseInt(object.Score) // idk why this is done tho
+    var dbCollection = 'people';
+
+    //Parse int since data comes in as strings.
+    object.location.x = parseInt(object.location.x) 
+    object.location.y = parseInt(object.location.y)
+    object.speed = parseInt(object.speed)
+
+    //And into hell we go !
     collectionDriver.save(dbCollection, object, function(err,docs) {
           if (err) { res.send(400, err); } 
           else { res.send(201, docs); } //B
@@ -75,12 +78,13 @@ app.post('/data', function(req, res) { //A
 
 
  
-app.get('/data/:collection', function(req, res) { //A
-   var params = req.params; //B
-   console.log(req.params.collection) //name
-   var userName = req.params.collection
-   var dbCollection = 'players'
-   collectionDriver.getPercentile(dbCollection, userName, function(error, objs) { //C
+app.get('/data/:names', function(req, res) { //A
+   var params = req.params; //get parameter in the url
+   console.log(req.params) //print dictionary
+   var personName = req.params.names //get the name of user we are trying to calculate bumps for
+   console.log(personName) //print name of person
+   var dbCollection = 'people'
+   collectionDriver.getDistance(dbCollection, personName ,function(error, objs) { //C
     	  if (error) { res.send(400, error); } //D
 	      else { 
                   res.send(200, objs); //H  
@@ -88,7 +92,7 @@ app.get('/data/:collection', function(req, res) { //A
    	});
 });
 
-app.post('/data/:collection', function(req, res) { //A
+app.post('/data/:names', function(req, res) { //A
     var object = req.body;
     console.log(object);
     var collection = req.params.collection;
