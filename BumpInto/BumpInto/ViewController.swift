@@ -123,7 +123,7 @@ MyPeriodicTask(){
         var longDeltaText:String = "\(m_latDelta)"
         
         
-        sendPost(latitudeText, y: longitudeText, xDelta: latDeltaText, yDelta: longDeltaText)
+        //sendPost(latitudeText, y: longitudeText, xDelta: latDeltaText, yDelta: longDeltaText)
         
         //use this to calculate how far they are
         //var distance = locationObj.distanceFromLocation(<#location: CLLocation!#>)
