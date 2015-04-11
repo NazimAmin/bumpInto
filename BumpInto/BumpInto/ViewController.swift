@@ -13,11 +13,9 @@ import MapKit
 class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
-    
     @IBOutlet weak var zoomOut: UIButton!
     
     var locationManager: CLLocationManager!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,10 +60,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     //this gets called in every single move
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         var locationArray = locations as NSArray
-        var locationObj = locationArray.lastObject as! CLLocation
+        var locationObj = locationArray.lastObject as CLLocation
         var xy = locationObj.coordinate
-        println(xy.latitude)
-        println(xy.longitude)
+        var speed = locationObj.speed
+        println("Latitude \(xy.latitude)")
+        println("Longitude: \(xy.longitude)")
+        println("Speed: \(speed)")
     }
     //zoom out function/. hardcoded
     @IBAction func ZoomOutButton(sender: UIButton) {

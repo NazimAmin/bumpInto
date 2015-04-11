@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -34,8 +34,19 @@
                                     <action selector="ZoomOutButton:" destination="vXZ-lx-hvc" eventType="touchDown" id="SjO-Pb-EUZ"/>
                                 </connections>
                             </button>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rbN-yw-ffr">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                <items>
+                                    <navigationItem title="Bump" id="tWF-kT-Nf1"/>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="rbN-yw-ffr" secondAttribute="trailing" id="UpZ-u1-miF"/>
+                            <constraint firstItem="rbN-yw-ffr" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="pdK-0B-PGd"/>
+                            <constraint firstItem="rbN-yw-ffr" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" id="rHv-ma-jVm"/>
+                        </constraints>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="vAW-1U-HP0"/>
