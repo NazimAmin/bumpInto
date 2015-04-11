@@ -1,0 +1,42 @@
+body
+    head
+        link(rel='stylesheet', href='/dist/css/bootstrap.min.css')
+        link(rel='stylesheet', href='/dist/css/bootstrap-theme.min.css')
+        link(rel='stylesheet', href='/data.css')
+    body
+        #wrapper
+            #sidebar-wrapper
+                ul.sidebar-nav
+                    li.sidebar-brand
+                        a(href='/') GeoMeet
+                    li
+                        a(href='/data') Data
+            
+
+            #page-content-wrapper
+                .container-fluid
+                    .row
+                        .col-lg-12
+                            #boxes
+                                span.best top kek
+                                br
+                                br
+
+                            br
+                            br
+                            #objects
+                                table(border=1, width=300)
+                                  if objects.length > 0
+                                        th="Name" 
+                                        th="CoordinateX"
+                                        th="CoordinateY"
+                                  - each obj in objects
+                                    tr.obj
+                                        td.Name= obj.name
+                                        td.Score= obj.coordinateX
+                                        td.Top= obj.coordinateY
+
+    script(src='/js/jquery.js')
+    // Bootstrap Core JavaScript
+    script(src='/dist/js/bootstrap.min.js')
+    script(src='/js/toggle.js')

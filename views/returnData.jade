@@ -1,0 +1,48 @@
+body
+    head
+        link(rel='stylesheet', href='/dist/css/bootstrap.min.css')
+        link(rel='stylesheet', href='/dist/css/bootstrap-theme.min.css')
+        link(rel='stylesheet', href='/data.css')
+    body
+        #wrapper
+            #sidebar-wrapper
+                ul.sidebar-nav
+                    li.sidebar-brand
+                        a(href='/') Dargon
+                    li
+                        a(href='/data') Ranking
+            
+
+            #page-content-wrapper
+                .container-fluid
+                    .row
+                        .col-lg-12
+                            #boxes
+                                span.best Below lies the names of the best Dargon players. 
+                                br
+                                br
+                                | A player can increase their Zaker Rating (zR) by getting
+                                | Dargon home consistently. However, it may drop if you 
+                                | fail to get the Dargon home. 
+                                br
+                                br
+                                | Players are rewarded with new Dargon skins to accomodate
+                                | for their hard work!
+                            br
+                            br
+                            #objects
+                                table(border=1, width=300)
+                                  if objects.length > 0
+                                        th="Name" 
+                                        th="zR"
+                                        th="Top"
+                                  - each obj in objects
+                                    tr.obj
+                                        td.Name= obj.Name
+                                        td.Score= obj.Score
+                                        td.Top= obj.Top
+
+    script(src='/js/jquery.js')
+    // Bootstrap Core JavaScript
+    script(src='/dist/js/bootstrap.min.js')
+    script(src='/js/toggle.js')
