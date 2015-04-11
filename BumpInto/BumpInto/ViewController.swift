@@ -60,13 +60,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
     
     
-    func sendPost(x: String, y: String){
+    func sendPost(x: String, y: String, xDelta: String, yDelta: String){
         var URL: NSURL = NSURL(string: "http://localhost:8080/data/")!
         var userName = "Numaer"
         var request:NSMutableURLRequest = NSMutableURLRequest(URL:URL)
         request.HTTPMethod = "POST"
         //var bodyData = "{\"name\": \(userName), \"location\" : {\"x\": \"\(x)\", \"y\": \"\(y)\"}}"
-        var bodyData = "name=\(userName)&x=\(x)&y=\(y)}"
+        var bodyData = "name=\(userName)&x=\(x)&y=\(y)&xDelta=\(xDelta), &yDelta=\(yDelta)"
         //println(bodyData)
         request.HTTPBody = bodyData.dataUsingEncoding(NSUTF8StringEncoding);
             NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue())
@@ -79,11 +79,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     //this gets called in every single second or so
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         var locationArray = locations as NSArray
-        var locationObj = locationArray.lastObject as! CLLocation
+        var locationObj = locationArray.lastObject as CLLocation
         var xy = locationObj.coordinate
         var speed = locationObj.speed
         var m_latDelta = mapView.region.span.latitudeDelta
         var m_longDelta = mapView.region.span.longitudeDelta
+        
+        var latitudeText:String = "\(xy.latitude)"
+        var longitudeText:String = "\(xy.longitude)"
+        var latDeltaText:String = "\(m_latDelta)"
+        var longDeltaText:String = "\(m_latDelta)"
+        
+        
+        sendPost(latitudeText, y: longitudeText, xDelta: latDeltaText, yDelta: longDeltaText)
         
         //use this to calculate how far they are
         //var distance = locationObj.distanceFromLocation(<#location: CLLocation!#>)
