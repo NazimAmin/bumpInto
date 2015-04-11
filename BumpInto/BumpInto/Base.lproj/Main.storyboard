@@ -22,7 +22,7 @@
                                     <rect key="frame" x="0.0" y="38" width="400" height="562"/>
                                 </variation>
                             </mapView>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rbN-yw-ffr">
+                            <navigationBar contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rbN-yw-ffr">
                                 <rect key="frame" x="0.0" y="8" width="600" height="44"/>
                                 <rect key="contentStretch" x="0.0" y="0.0" width="1" height="0.0"/>
                                 <items>

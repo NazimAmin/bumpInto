@@ -21,36 +21,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         super.viewDidLoad()
         initiatLocationManager()
     }
-	/*
-		// this is the dispatch source code, that creates a timer
-		dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispatch_queue_t queue, dispatch_block_t block){
-			dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
-			if (timer){
-				dispatch_source_set_timer(timer, dispatch_walltime(NULL, 0), interval, leeway);
-				dispatch_source_set_event_handler(timer, block);
-				dispatch_resume(timer);
-   }
-   return timer;
-}
-void CreateTimer() // this shit makes a timer
-{
-   dispatch_source_t aTimer = CreateDispatchTimer(5ull * NSEC_PER_SEC, 1ull * NSEC_PER_SEC, dispatch_get_main_queue(), ^{ 
-		MyPeriodicTask(); }); // heres where we place the method that updates shit, the function needs to be here
-		// when you call the timer, the function is then called
-		// ths has te potential to be hazardous, so make sure to call it when youre good and ready
- 
-   // Store it somewhere for later use.
-    if (aTimer)
-    {
-        MyStoreTimer(aTimer);
-    }
-}
-
-MyPeriodicTask(){
-	// update location nd shit here
-	
-}
-	*/
     
     func initiatLocationManager(){
     // Do any additional setup after loading the view, typically from a nib.
@@ -111,19 +81,11 @@ MyPeriodicTask(){
 	// call createTimer when you need to start doing this
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         var locationArray = locations as NSArray
-        var locationObj = locationArray.lastObject as CLLocation
+        var locationObj = locationArray.lastObject as! CLLocation
         var xy = locationObj.coordinate
         var speed = locationObj.speed
         var m_latDelta = mapView.region.span.latitudeDelta
         var m_longDelta = mapView.region.span.longitudeDelta
-        
-        var latitudeText:String = "\(xy.latitude)"
-        var longitudeText:String = "\(xy.longitude)"
-        var latDeltaText:String = "\(m_latDelta)"
-        var longDeltaText:String = "\(m_latDelta)"
-        
-        
-        sendPost(latitudeText, y: longitudeText, xDelta: latDeltaText, yDelta: longDeltaText)
         
         //use this to calculate how far they are
         //var distance = locationObj.distanceFromLocation(<#location: CLLocation!#>)
@@ -133,7 +95,7 @@ MyPeriodicTask(){
         println("Speed: \(speed)")
         println("LangDelta: \(m_latDelta)")
         println("LongDelta: \(m_longDelta)")
-        
+
         var latDelta:CLLocationDegrees = 0.01 //mapView.region.span.latitudeDelta*2
         var longDelta:CLLocationDegrees = 0.01 //mapView.region.span.latitudeDelta*2
         var theSpan:MKCoordinateSpan = MKCoordinateSpanMake(latDelta, longDelta)
@@ -142,13 +104,29 @@ MyPeriodicTask(){
         var region:MKCoordinateRegion = MKCoordinateRegionMake(pointLocation, theSpan)
         mapView.setRegion(region, animated: true)
         
+        var positionAnnotation = MKPointAnnotation()
         
-        var pinLocation : CLLocationCoordinate2D = CLLocationCoordinate2DMake(37, -122)
-        var objectAnnotation = MKPointAnnotation()
-        objectAnnotation.coordinate = pinLocation
-        objectAnnotation.title = "okay this is the title"
-        self.mapView.addAnnotation(objectAnnotation)
+        positionAnnotation.coordinate = pointLocation
+        positionAnnotation.title = "name of the User"
         
+        self.mapView.addAnnotation(positionAnnotation)
     }
+    func mapView(mapView: MKMapView!,
+        viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
+            let reuseId = "reuseID"
+            var redPin = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId) as? MKPinAnnotationView
+            
+            if(redPin == nil){
+                redPin = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+                redPin!.canShowCallout = true
+                redPin!.animatesDrop = true
+                redPin!.pinColor = .Red
+                redPin!.rightCalloutAccessoryView = UIButton.buttonWithType(.DetailDisclosure) as! UIButton
+            } else {
+                redPin!.annotation = annotation
+            }
+            return redPin!
+    }
+
 }
 
