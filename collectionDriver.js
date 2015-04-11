@@ -80,8 +80,12 @@ calculateDistance = function(obj1, obj2){
 
 //Calculate the person closest to personName using distance formula
 CollectionDriver.prototype.getDistance = function(collectionName, personName, callback){
-  var lowestDistance = 1000000000 //Assume farthest distance, 
+  var threshold = 1000000000 //Assume farthest distance, 
   var lastPerson;
+  
+
+  var closestPeople = []
+
   this.getCollection(collectionName, function(error, collection){
     if(error){callBack(error, false);
     } else {
@@ -103,22 +107,29 @@ CollectionDriver.prototype.getDistance = function(collectionName, personName, ca
                   if(playerObject.name != comparator.name){
                     //calculate distance between the the param person and the current item in the list.
                     var distance = calculateDistance(comparator, playerObject);
-                    if(distance < lowestDistance){ // difference in distance
+                    if(distance < threshold){ // difference in distance
                         lowestDistance = distance;
                         lastPerson = comparator
-                        //Return document in collection we ar trying to get.
+
+
+                      //create new json object
+                          var closestPerson = {
+                              "name" : lastPerson.name,
+                              "distance" : lowestDistance,
+                              "x" : comparator.location.x,
+                              "y" : comparator.location.y
+                          }
+                          console.log(closestPerson)
+                          closestPeople.push(closestPerson)
+                        
                       }
                     }
                 } 
 
-        //create new json object
-            var closestPerson = {
-                "name" : lastPerson.name,
-                "distance" : lowestDistance
-            }
-
+              closestPeople = JSON.stringify(closestPeople);
+        //Return document in collection we ar trying to get.
             //return new made object; //case if it's false, nothing else matters
-             callback(closestPerson, true); // true case
+             callback(closestPeople, true); // true case
 
             }
           })

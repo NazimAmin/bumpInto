@@ -63,8 +63,8 @@ app.post('/data', function(req, res) { //A
     var dbCollection = 'people';
 
     //Parse int since data comes in as strings.
-    object.location.x = parseInt(object.location.x) 
-    object.location.y = parseInt(object.location.y)
+    object.x = parseInt(object.x) 
+    object.y = parseInt(object.y)
     object.speed = parseInt(object.speed)
 
     //And into hell we go !

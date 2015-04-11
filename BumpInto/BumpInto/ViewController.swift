@@ -58,13 +58,37 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         locationManager.stopUpdatingLocation()
         initiatLocationManager()
     }
+    
+    
+    func sendPost(x: String, y: String){
+        var URL: NSURL = NSURL(string: "http://localhost:8080/data/")!
+        var userName = "Numaer"
+        var request:NSMutableURLRequest = NSMutableURLRequest(URL:URL)
+        request.HTTPMethod = "POST"
+        //var bodyData = "{\"name\": \(userName), \"location\" : {\"x\": \"\(x)\", \"y\": \"\(y)\"}}"
+        var bodyData = "name=\(userName)&x=\(x)&y=\(y)}"
+        //println(bodyData)
+        request.HTTPBody = bodyData.dataUsingEncoding(NSUTF8StringEncoding);
+            NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue())
+                {
+                    (response, data, error) in
+                    println(NSString(data: data, encoding: NSUTF8StringEncoding))
+        }
+    }
+    
     //this gets called in every single second or so
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         
         var locationArray = locations as NSArray
-        var locationObj = locationArray.lastObject as! CLLocation
+        var locationObj = locationArray.lastObject as CLLocation
         var xy = locationObj.coordinate
         var speed = locationObj.speed
+        
+        
+        //Get stringified latitude and longitude and post data.
+        var latitudeText:String = "\(xy.latitude)"
+        var longitudeText:String = "\(xy.longitude)"
+        sendPost(latitudeText, y: longitudeText)
         
         //use this to calculate how far they are
         //var distance = locationObj.distanceFromLocation(<#location: CLLocation!#>)
@@ -84,7 +108,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         geo.reverseGeocodeLocation(loc) {
             (placemarks : [AnyObject]!, error : NSError!) in
             if placemarks != nil {
-                let p = placemarks[0] as! CLPlacemark
+                let p = placemarks[0] as CLPlacemark
                 println("you are at:\n\(p.addressDictionary.values)") // do something with address
             }
         }
