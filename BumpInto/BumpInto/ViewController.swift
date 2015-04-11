@@ -13,8 +13,8 @@ import MapKit
 class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
-    @IBOutlet weak var zoomOut: UIButton!
     
+    @IBOutlet weak var doButton: UIButton!
     var locationManager: CLLocationManager!
     
     override func viewDidLoad() {
@@ -40,16 +40,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 mapView.mapType = MKMapType.Standard
                 mapView.showsUserLocation = true
                 mapView.showsBuildings = true
-                
-                MKCoordinateRegion region;
-                // <LATITUDE> and <LONGITUDE> for Cupertino, CA.
-                
-                region = MKCoordinateRegionMake(location, MKCoordinateSpanMake(0.5, 0.5));
-                // 0.5 is spanning value for region, make change if you feel to adjust bit more
-                
-                MKCoordinateRegion adjustedRegion = [self.mapView regionThatFits:region];
-                [self.mapView setRegion:adjustedRegion animated:YES];
-            }
+                mapView.userTrackingMode = .Follow
+                }
         }
         else{
             println("Location service isn't enabled")
@@ -66,23 +58,52 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         locationManager.stopUpdatingLocation()
         initiatLocationManager()
     }
-    
     //this gets called in every single second or so
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+        
         var locationArray = locations as NSArray
-        var locationObj = locationArray.lastObject as CLLocation
+        var locationObj = locationArray.lastObject as! CLLocation
         var xy = locationObj.coordinate
         var speed = locationObj.speed
+        
+        //use this to calculate how far they are
+        //var distance = locationObj.distanceFromLocation(<#location: CLLocation!#>)
         
         println("Latitude \(xy.latitude)")
         println("Longitude: \(xy.longitude)")
         println("Speed: \(speed)")
-    }
-    //zoom out function/. hardcoded
-    @IBAction func ZoomOutButton(sender: UIButton) {
-        var MapSpan = MKCoordinateSpan(latitudeDelta: mapView.region.span.latitudeDelta*2, longitudeDelta: mapView.region.span.longitudeDelta*2)
-        var MapRegion = MKCoordinateRegion(center: mapView.region.center, span: MapSpan)
-        mapView.setRegion(MapRegion, animated: true)
+        
+        let loc = self.mapView.userLocation.location
+        if loc == nil {
+            println("I don't know where you are now")
+            return
+        }
+        
+        //getting the relevent place the user is
+        let geo = CLGeocoder()
+        geo.reverseGeocodeLocation(loc) {
+            (placemarks : [AnyObject]!, error : NSError!) in
+            if placemarks != nil {
+                let p = placemarks[0] as! CLPlacemark
+                println("you are at:\n\(p.addressDictionary.values)") // do something with address
+            }
+        }
+        var latDelta:CLLocationDegrees = 0.01 //mapView.region.span.latitudeDelta*2
+        
+        var longDelta:CLLocationDegrees = 0.01 //mapView.region.span.latitudeDelta*2
+        
+        var theSpan:MKCoordinateSpan = MKCoordinateSpanMake(latDelta, longDelta)
+        var pointLocation:CLLocationCoordinate2D = CLLocationCoordinate2DMake(37, -122)
+        
+        var region:MKCoordinateRegion = MKCoordinateRegionMake(pointLocation, theSpan)
+        mapView.setRegion(region, animated: true)
+        
+        var pinLocation : CLLocationCoordinate2D = CLLocationCoordinate2DMake(37, -122)
+        var objectAnnotation = MKPointAnnotation()
+        objectAnnotation.coordinate = pinLocation
+        objectAnnotation.title = "okay this is the title"
+        self.mapView.addAnnotation(objectAnnotation)
+
     }
 }
 
