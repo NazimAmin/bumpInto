@@ -21,6 +21,36 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         super.viewDidLoad()
         initiatLocationManager()
     }
+	/*
+		// this is the dispatch source code, that creates a timer
+		dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispatch_queue_t queue, dispatch_block_t block){
+			dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+			if (timer){
+				dispatch_source_set_timer(timer, dispatch_walltime(NULL, 0), interval, leeway);
+				dispatch_source_set_event_handler(timer, block);
+				dispatch_resume(timer);
+   }
+   return timer;
+}
+void CreateTimer() // this shit makes a timer
+{
+   dispatch_source_t aTimer = CreateDispatchTimer(5ull * NSEC_PER_SEC, 1ull * NSEC_PER_SEC, dispatch_get_main_queue(), ^{ 
+		MyPeriodicTask(); }); // heres where we place the method that updates shit, the function needs to be here
+		// when you call the timer, the function is then called
+		// ths has te potential to be hazardous, so make sure to call it when youre good and ready
+ 
+   // Store it somewhere for later use.
+    if (aTimer)
+    {
+        MyStoreTimer(aTimer);
+    }
+}
+
+MyPeriodicTask(){
+	// update location nd shit here
+	
+}
+	*/
     
     func initiatLocationManager(){
     // Do any additional setup after loading the view, typically from a nib.
@@ -77,6 +107,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
     
     //this gets called in every single second or so
+	// put this shit in place of myperiodic function
+	// call createTimer when you need to start doing this
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         var locationArray = locations as NSArray
         var locationObj = locationArray.lastObject as CLLocation
