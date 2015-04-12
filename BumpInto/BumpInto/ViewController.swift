@@ -53,6 +53,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         // Dispose of any resources that can be recreated.
     }
     
+    func delay(delay:Double, closure:()->()) {
+        dispatch_after(
+            dispatch_time(
+                DISPATCH_TIME_NOW,
+                Int64(delay * Double(NSEC_PER_SEC))
+            ),
+            dispatch_get_main_queue(), closure)
+    }
+    
     //if the locationManager fails
     func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
         locationManager.stopUpdatingLocation()
@@ -79,6 +88,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     //this gets called in every single second or so
 	// put this shit in place of myperiodic function
 	// call createTimer when you need to start doing this
+    
+    
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         var locationArray = locations as NSArray
         var locationObj = locationArray.lastObject as! CLLocation
@@ -92,7 +103,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         var longitudeText:String = "\(xy.longitude)"
         var latDeltaText:String = "\(m_latDelta)"
         var longDeltaText:String = "\(m_latDelta)"
-        
+        delay(30) {
         
         //sendPost(latitudeText, y: longitudeText, xDelta: latDeltaText, yDelta: longDeltaText)
         
@@ -112,7 +123,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         var pointLocation:CLLocationCoordinate2D = CLLocationCoordinate2DMake(37, -122)
         
         var region:MKCoordinateRegion = MKCoordinateRegionMake(pointLocation, theSpan)
-        mapView.setRegion(region, animated: true)
+        self.mapView.setRegion(region, animated: true)
         
         var positionAnnotation = MKPointAnnotation()
         
@@ -120,6 +131,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         positionAnnotation.title = "name of the User"
         
         self.mapView.addAnnotation(positionAnnotation)
+        }
+            
     }
     func mapView(mapView: MKMapView!,
         viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
