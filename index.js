@@ -67,8 +67,8 @@ app.post('/data', function(req, res) { //A
     object.y = parseInt(object.y)
     object.speed = parseInt(object.speed)
 
-    //And into hell we go !
-    collectionDriver.save(dbCollection, object, function(err,docs) {
+    //And into hell we go ! lmaoo nigga
+    collectionDriver.save(dbCollection, object, function(err, docs) {
           if (err) { res.send(400, err); } 
           else { res.send(201, docs); } //B
      });
@@ -93,7 +93,11 @@ app.get('/data/:names', function(req, res) { //A
 });
 
 app.post('/data/:names', function(req, res) { //A
-    var object = req.body;
+    var object = req.body; // we're usng post, it seems
+    // so when we use post, what we do is cool stuff
+    // so abscally, at soem point the comparison will be done, but afterwards, we'd need to
+    // store teh inforamtion in teh response obejct
+    //in express this s easy, it's literally res.json(); with some sht in json form
     console.log(object);
     var collection = req.params.collection;
     collectionDriver.save(collection, object, function(err,docs) {

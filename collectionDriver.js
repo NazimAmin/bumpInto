@@ -47,10 +47,12 @@ CollectionDriver.prototype.save = function(collectionName, obj, callback) {
     this.getCollection(collectionName, function(error, the_collection) { //A
       if( error ) callback(error)
       else {
-        obj.created_at = new Date(); //B
-        the_collection.update({Name: obj.name}, obj, {upsert:true}, function() { //C
+        obj.created_at = new Date(); //B // call getdistance here isntead of post
+        the_collection.update({Name: obj.name}, obj, {upsert:true}, // C 
+        this.getDistance(collectionName, obj.name, function(){ //D
           callback(null, obj);
-        });
+        }) 
+        );
       }
     });
 };
